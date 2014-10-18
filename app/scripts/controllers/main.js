@@ -8,10 +8,8 @@
  * Controller of the thelistwebApp
  */
 angular.module('thelistwebApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+    .controller('MainCtrl', ['$scope', 'userService', function ($scope, userService) {
+        $scope.submit = function () {
+            userService.authenticate($scope.username, $scope.password);
+        }
+    }]);
