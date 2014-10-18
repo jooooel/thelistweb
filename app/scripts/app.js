@@ -13,24 +13,27 @@ angular
         'ngAnimate',
         'ngCookies',
         'ngResource',
-        'ngRoute',
+        'ui.router',
         'ngSanitize',
         'ngTouch'
     ])
-    .config(function ($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'views/main.html',
+    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+        // For any unmatched url, redirect to /
+        $urlRouterProvider.otherwise("/");
+
+        // Now set up the states
+        $stateProvider
+            .state('main', {
+                url: "/",
+                templateUrl: "views/main.html",
                 controller: 'MainCtrl'
             })
-            .when('/about', {
-                templateUrl: 'views/about.html',
+            .state('about', {
+                url: "/about",
+                templateUrl: "views/about.html",
                 controller: 'AboutCtrl'
-            })
-            .otherwise({
-                redirectTo: '/'
             });
-    })
+    }])
     .controller('AppController', ['$scope', 'userService', function ($scope, userService) {
         $scope.isSignedIn = function () {
             return userService.isAuthenticated();
