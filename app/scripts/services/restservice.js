@@ -12,8 +12,22 @@ angular.module('thelistwebApp')
         var baseUrl = 'http://localhost:8888/';
 
         return {
+            get: function (path) {
+                return $http.get(baseUrl + path);
+            },
+
             post: function (path, data) {
                 return $http.post(baseUrl + path, data);
+            },
+
+            setHeaders: function (user) {
+                $http.defaults.headers.common['Username'] = user.username;
+                $http.defaults.headers.common['Authorization'] = user.authtoken;
+            },
+
+            resetHeaders: function () {
+                $http.defaults.headers.common['Username'] = undefined;
+                $http.defaults.headers.common['Authorization'] = undefined;
             }
         };
     }]);

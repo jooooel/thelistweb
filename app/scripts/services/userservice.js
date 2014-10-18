@@ -9,44 +9,57 @@
  */
 angular.module('thelistwebApp')
     .factory('userService', ['$cookieStore', '$state', 'restService', function ($cookieStore, $state, restService) {
-        var user;
-
-        var saveToken = function(authtoken) {
-            $cookieStore.put('authtoken', authtoken);
+        var saveUser = function (user) {
+            restService.setHeaders(user);
+            $cookieStore.put('user', user);
         };
 
-        var getToken = function () {
-            return $cookieStore.get('authtoken');
+        var getUser = function () {
+            return $cookieStore.get('user');
         };
 
-        var resetToken = function () {
-            $cookieStore.remove('authtoken');
+        var loadUser = function () {
+            var user = getUser();
+            if (user) {
+                restService.setHeaders(user);
+            }
+        };
+
+        var resetUser = function () {
+            restService.resetHeaders();
+            $cookieStore.remove('user');
         };
 
         var signOut = function () {
-            user = undefined;
-            resetToken();
+            resetUser();
             $state.go('signin');
         };
 
+        // Load user from cookie
+        loadUser();
+
         return {
             getUser: function () {
-                return user;
+                return getUser();
             },
 
             isAuthenticated: function () {
-                return getToken() != undefined;
+                return getUser() != undefined;
             },
 
-            signOut: function() {
+            signOut: function () {
                 signOut();
             },
 
             authenticate: function (username, password) {
                 return restService.post('thelist/auth', { username: username, password: password }).
                     success(function (data, status) {
-                        user = { username: username };
-                        saveToken(data);
+                        var user = {
+                            username: username,
+                            authtoken: data.token
+                        };
+
+                        saveUser(user);
                         $state.go('main');
                     }).
                     error(function (data, status) {
