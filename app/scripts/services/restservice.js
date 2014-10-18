@@ -10,10 +10,16 @@
 angular.module('thelistwebApp')
     .factory('restService', ['$http', function ($http) {
         var baseUrl = 'http://localhost:8888/';
+//        var baseUrl = 'https://2-dot-thelisttest.appspot.com/';
+//        var baseUrl = 'https://duochjagthelist.appspot.com/';
 
         return {
             get: function (path) {
                 return $http.get(baseUrl + path);
+            },
+
+            put: function (path, data) {
+                return $http.put(baseUrl + path, data);
             },
 
             post: function (path, data) {

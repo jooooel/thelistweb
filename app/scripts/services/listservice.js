@@ -8,7 +8,7 @@
  * Factory in the thelistwebApp.
  */
 angular.module('thelistwebApp')
-    .factory('listService', ['restService', 'userService', function (restService, userService) {
+    .factory('listService', ['restService', 'commonService', 'userService', function (restService, commonService, userService) {
         var lists;
 
         return {
@@ -27,7 +27,7 @@ angular.module('thelistwebApp')
             },
 
             createList: function (list) {
-                list.identifier = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
+                list.identifier = commonService.generateGuid();
                 return restService.post('thelist/secure/list?username=' + userService.getUser().username, list);
             }
         };

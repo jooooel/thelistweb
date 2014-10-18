@@ -15,4 +15,11 @@ angular.module('thelistwebApp')
         itemService.getItems(listId).then(function (items) {
             $scope.items = items;
         });
+
+        $scope.createItem = function () {
+            var newItem = { name: $scope.newItemName };
+            itemService.createItem(newItem, listId).then(function() {
+                $scope.items.push(newItem);
+            });
+        }
     }]);
