@@ -33,10 +33,10 @@ angular
                 templateUrl: 'views/signin.html',
                 controller: 'SigninCtrl'
             })
-            .state('about', {
-                url: '/about',
-                templateUrl: 'views/about.html',
-                controller: 'AboutCtrl'
+            .state('list', {
+                url: '/list/:listid',
+                templateUrl: 'views/list.html',
+                controller: 'ListCtrl'
             });
     }])
     .run(['$rootScope', '$state', 'userService', function ($rootScope, $state, userService) {
